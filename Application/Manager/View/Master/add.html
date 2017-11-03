@@ -1,0 +1,80 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">基本信息</a></li>
+                    </ul>
+                </div>
+                <div class="widget-content tab-content nopadding">
+                    <div id="tab1" class="tab-pane active">
+                    <form class="form-horizontal" method="post" action="{:U('Member/update')}">
+                        <input type="hidden" name="model" value="Member">
+                        <div class="control-group">
+                            <label class="control-label">账号</label>
+                            <div class="controls">
+                                <input type="text" name="account" value="{$row['account']}">
+                                <span class="help-block">用于登陆，必须是邮箱</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">密码</label>
+                            <div class="controls">
+                                <input type="text" name="password" value="{$row['password']}">
+                                <span class="help-block">密码长度不少于6位</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">昵称</label>
+                            <div class="controls">
+                                <input type="text" name="nickname" value="{$row['nickname']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">头像</label>
+                            <div class="controls">
+                                {:hook('upload',array('is_first'=>1,'unique_sign'=>'head_pic','field_name'=>'head_pic','field_value'=>$row['head_pic'],'save_path'=>'Member'))}
+                                <span class="help-block">图片尽量控制在100K-300K，尺寸：100*100</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">性别</label>
+                            <div class="controls" class="controls">
+                                <select name="sex">
+                                    <option value="">请选择</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                    <!--<option value="3">保密</option>-->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">所在地区</label>
+                            <div class="controls" class="controls">
+                                <select name="province">
+                                    <option value="">请选择</option>
+                                    <volist name="region" id="region">
+                                        <option value="{$region['province_id']}">{$region['region_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">保 存</button>
+                        </div>
+                    </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

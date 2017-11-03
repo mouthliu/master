@@ -1,0 +1,83 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn href" url="{:U('Member/index')}" target-form="ids">返回</button>&nbsp;
+                    <form action="{:U('MemberCoupon/memberindex')}" method="post" class="form">
+                        <select name="status" style=" width: 150px;">
+                            <option value="">请选择</option>
+                            <option value="0" <if condition="$_REQUEST['status'] eq '0'">selected</if> >未使用</option>
+                            <option value="1" <if condition="$_REQUEST['status'] eq '1'">selected</if> >已使用</option>
+                        </select>
+                        <button class="btn btn-inverse"  style="margin-top: -10px;">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>ID</th>
+                            <th>用户账户</th>
+                            <th>满足金额</th>
+                            <th>优惠金额</th>
+                            <th>使用时间</th>
+                            <th>开始时间</th>
+                            <th>过期时间</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <!--<th>操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['nickname']}</td>
+                                <td>{$row['satisty_price']}</td>
+                                <td>{$row['discount_price']}</td>
+                                <td><if condition="$row['status'] eq 1">{$row['update_time']|date='Y-m-d H:i',###}</if></td>
+                                <td>{$row['start_time']|date='Y-m-d',###}</td>
+                                <td>{$row['end_time']|date='Y-m-d',###}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <eq name="row['status']" value="1">已使用</eq>
+                                    <eq name="row['status']" value="0">未使用</eq>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

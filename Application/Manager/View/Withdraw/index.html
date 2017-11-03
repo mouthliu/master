@@ -1,0 +1,165 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title widget-title-search">
+                    <button class="btn btn-success ajax-post" url="{:U('Withdraw/doWithdraw',array('model'=>'Withdraw','status'=>1))}" target-form="ids">确认</button>&nbsp;
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('Withdraw/remove',array('model'=>'Withdraw','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <!--<button class="btn btn-info lead-btn" target-form="ids">导出Excel</button>&nbsp;-->
+                    <form action="{:U('Withdraw/index')}" method="post" class="form">
+                        <input type="text" name="name" value="{$_REQUEST['name']}" placeholder="银行卡用户名" style="width:140px;margin-top:-10px;">
+                        <input type="text" name="bank_number" value="{$_REQUEST['bank_number']}" placeholder="银行卡号" style="width:140px;margin-top:-10px;">
+                        <input type="text" name="start_time" value="{$_REQUEST['start_time']}" placeholder="开始时间" style="width: 140px;margin-top:-10px;" class="datetime">
+                        <input type="text" name="end_time" value="{$_REQUEST['end_time']}" placeholder="结束时间" style="width: 140px;margin-top:-10px;" class="datetime">
+
+                        <select name="user_type" style="width: 140px;">
+                            <option value="">提现人群</option>
+                            <option value="1" <if condition="$_REQUEST['user_type'] eq 1">selected</if> >用户提现</option>
+                            <option value="2" <if condition="$_REQUEST['user_type'] eq 2">selected</if> >大师提现</option>
+                        </select>
+
+                        <select name="bank_type" style=" width: 140px;">
+                            <option value="">银行卡名称</option>
+                            <volist name="bank_list" id="bank_list">
+                                <option value="{$bank_list['bank_id']}" <if condition="$_REQUEST['bank_type'] eq $bank_list['bank_id']">selected</if> >{$bank_list['bank_name']}</option>
+                            </volist>
+                        </select>
+                        <button class="btn btn-inverse" style="margin-top:-10px;">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>ID</th>
+                            <th>用户昵称</th>
+                            <th>用户类型</th>
+                            <th>提现类型</th>
+                            <td>支付宝账号</td>
+                            <td>支付宝昵称</td>
+                            <th>银行卡号</th>
+                            <th>银行卡用户名</th>
+                            <th>银行名称</th>
+                            <th>提现金额</th>
+                            <th>提现时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['nickname']}</td>
+                                <td>
+                                    <if condition="$row['user_type'] eq 1">用户提现</if>
+                                    <if condition="$row['user_type'] eq 2">大师提现</if>
+                                </td>
+                                <td>
+
+                                    <if condition="$row['type'] eq 2">支付宝提现<else/>银行卡提现</if>
+                                </td>
+                                <td>{$row['alipay_account']}</td>
+                                <td>{$row['alipay_name']}</td>
+                                <td>{$row['bank_number']}</td>
+                                <td>{$row['name']}</td>
+                                <td>{$row['bank_name']}</td>
+
+                                <td>{$row['price']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <eq name="row['status']" value="0">待处理</eq>
+                                    <eq name="row['status']" value="1">已处理</eq>
+                                </td>
+                                <td>
+                                    <eq name="row['status']" value="0">
+                                        <a href="{:U('Withdraw/doWithdraw',array('model'=>'Withdraw','ids'=>$row['id'],'status'=>1))}" title="此按钮无法自动提现 需手动打款" class="tip-bottom ajax-get">
+                                            <span class="label label-success">确认</span></a>&nbsp;
+                                    </eq>
+                                    <a href="{:U('Withdraw/detail',array('id'=>$row['id']))}" title="明细" class="tip-bottom">
+                                        <span class="label label-info">明细</span></a>&nbsp;
+                                    <eq name="row['status']" value="1">
+                                        <a href="{:U('Withdraw/remove',array('model'=>'Withdraw','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                            <span class="label label-important">删除</span></a>
+                                    </eq>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="lead-model">
+        <form class="form-horizontal" method="post" action="{:U('Withdraw/derive')}">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>导出用户信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label class="control-label">开始时间</label>
+                    <div class="controls">
+                        <input type="text" name="s_time"  placeholder="开始时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="text" name="e_time"  placeholder="结束时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" id="a_hide">关闭</a>
+                <button  class="btn btn-primary submit">确认导出</button>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+            $(".lead-btn").click(function(){
+                $('#lead-model').modal('show')
+            });
+            $("#a_hide").click(function(){
+                $('#lead-model').modal('hide')
+            });
+
+            $('button.btn-inverse').click(function(){
+                var start = $('input[name = start_time]').val();
+                var end = $('input[name = end_time]').val();
+                var starttime = Date.parse(new Date(start));
+                var endtime = Date.parse(new Date(end));
+                if(endtime < starttime){
+                    alert('请重新选择时间');
+                    return false;
+                }
+            });
+        })
+    </script>
+</block>

@@ -1,0 +1,54 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-plus"></i>
+                    </span>
+                    <h5></h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form class="form-horizontal" method="post" action="{:U('Message/add')}" id="form">
+                        <input type="hidden" name="model" value="Message">
+                        <!--<input type="hidden" name="id" value="{$row['id']}">-->
+                        <div class="control-group">
+                            <label class="control-label">消息标题</label>
+                            <div class="controls">
+                                <input type="text" name="headline" value="{$row['headline']}">
+                                <span class="help-block">30个字符以内</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">发布类型</label>
+                            <div class="controls">
+                                <select name="type">
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['type'] eq 1">selected</if>>用户</option>
+                                    <option value="2" <if condition="$row['type'] eq 2">selected</if>>大师</option>
+                                </select>
+                                <span class="help-block">30个字符以内</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">文章内容</label>
+                            <div class="controls">
+                                <textarea rows="20" name="content">{$row['content']}</textarea>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <button class="btn btn-info ajax-post no-refresh" type="submit" id="submit" target-form="form-horizontal">新 增</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

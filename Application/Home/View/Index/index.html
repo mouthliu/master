@@ -1,0 +1,180 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="Author" content="top">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1"/>
+    <link href="__PUBLIC__/Home/css/jquery.fullPage.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/xq.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/public.css" rel="stylesheet">
+    <script src="__PUBLIC__/Home/js/jquery-2.0.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jquery-ui-1.10.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jquery.fullPage.min.js"></script>
+    <title>App下载推广页面</title>
+    <style type="text/css">
+        @media screen and (max-width: 600px) {
+            .pic > div{
+                width: 100%;
+                position: absolute;
+                top: 12%;
+                left: 50%;
+                margin-left: -50%;
+            }
+            .pic > div.fr .downcode{
+                display: none;
+            }
+            .pic > div.fl{
+                top: 38%;
+                margin-left: -36%;
+            }
+            .pic > div.fl img{
+                height: auto;
+                width: 100%;
+            }
+            .header .fl{
+                float: none;
+            }
+            .header .fl img{
+                margin: 15px auto;
+            }
+            .header .fr span{
+                box-shadow: 0px 0px 4px #a5a5a5;
+                text-shadow: 0px 0px 4px #5d5d5d;
+                margin-top: 10px;
+            }
+            .pic .fl img{
+                height: 500px;
+                margin-left: -50px;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        $(function(){
+            $('#do_cont').fullpage({
+                'verticalCentered': true,//内容是否垂直居中
+                'css3': true,
+                // 'continuousVertical': true,//控制是否循环
+                'loopTop':true,
+                'loopBottom':true,
+                'navigation': true,
+                'navigationPosition': 'right',
+                'navigationColor' :  '#ccc',
+                'navigationTooltips': ['快来', '下载', 'app', '哦！'],
+                'afterLoad':function (anchorLink,index) {
+                    $(".section").each(function () {
+                        var fl=$(this).find(".fl");
+                        var fr=$(this).find(".fr");
+                        fl.removeClass(fl.attr("anima"));
+                        fr.removeClass(fr.attr("anima"));
+                    });
+                    var cur=$(".section").eq(index-1);
+                    var fl=cur.find(".fl");
+                    var fr=cur.find(".fr");
+                    fl.addClass(fl.attr("anima"));
+                    fr.addClass(fr.attr("anima"));
+                }
+            });
+            $("body").append('<div class="footer">© 2017 聊城平心悟网络科技有限公司</div><div class="header"><div class="width macen"><div class="fl"><img src="__PUBLIC__/Home/img/logo.png"></div><div class="fr"><span><img src="__PUBLIC__/Home/img/iphone.png"><a href="https://www.pgyer.com/qrYI">iPhone下载</a></span><span><img src="__PUBLIC__/Home/img/android.png"><a href="http://www.dashiwang.net/img/dashi.apk">Android下载</a></span></div></div></div>');
+        });
+    </script>
+</head>
+<body>
+<div id="do_cont">
+    <!-- <div id="bg_1" class="section">
+        <div  class="width macen pic">
+            <div class="fl animated2 putin" anima="putin">
+                <img src="img/1.png">
+            </div>
+            <div class="fr flash animated2" anima="flash">
+                <div class="bake">
+                    <div>
+                        <img src="img/top1ti.png">
+                    </div>
+                    <div class="downcode">
+                        <div class="boe31"><img src="img/code.png"></div>
+                        <div style="font-size:14px;text-align:center;line-height:45px;color:#717171;">手机扫描二维码下载</div>
+                        <div class="downbtn">
+                            <div class="btn">立即下载</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div id="bg_2" class="section">
+        <div  class="width macen pic">
+            <div class="fl animated2" anima="flash">
+                <img src="__PUBLIC__/Home/img/2.png">
+            </div>
+            <div class="fr animated2" anima="leftdown">
+                <div class="bake">
+                    <div>
+                        <img src="__PUBLIC__/Home/img/top.png">
+                    </div>
+                    <div class="downcode">
+                        <div class="boe31"><img src="__PUBLIC__/Home/img/code.png"></div>
+                        <div style="font-size:14px;text-align:center;line-height:45px;color:#717171;">大师用户端下载</div>
+                        <div class="downbtn">
+                            <div class="btn">立即下载</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bake">
+                    
+                    <div class="downcode">
+                        <div class="boe31"><img src="__PUBLIC__/Home/img/code.png"></div>
+                        <div style="font-size:14px;text-align:center;line-height:45px;color:#717171;">大师端下载</div>
+                        <div class="downbtn">
+                            <div class="btn">立即下载</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bg_3" class="section">
+        <div  class="width macen pic">
+            <div class="fl animated2" anima="leftdown">
+                <img src="__PUBLIC__/Home/img/3.png">
+            </div>
+            <div class="fr animated2" anima="updown">
+                <div class="bake">
+                    <div>
+                        <img src="__PUBLIC__/Home/img/top.png">
+                    </div>
+                    <div class="downcode">
+                        <div class="boe31"><img src="__PUBLIC__/Home/img/code.png"></div>
+                        <div style="font-size:14px;text-align:center;line-height:45px;color:#717171;">手机扫描二维码下载</div>
+                        <div class="downbtn">
+                            <div class="btn">立即下载</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bg_4" class="section">
+        <div  class="width macen pic">
+            <div class="fl animated2" anima="updown">
+                <img src="__PUBLIC__/Home/img/4.png">
+            </div>
+            <div class="fr animated2" anima="putin">
+                <div class="bake">
+                    <div>
+                        <img src="__PUBLIC__/Home/img/top.png">
+                    </div>
+                    <div class="downcode">
+                        <div class="boe31"><img src="__PUBLIC__/Home/img/code.png"></div>
+                        <div style="font-size:14px;text-align:center;line-height:45px;color:#717171;">手机扫描二维码下载</div>
+                        <div class="downbtn">
+                            <div class="btn">立即下载</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

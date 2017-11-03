@@ -1,0 +1,77 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn href" url="{:U('WRecord/index')}" target-form="ids">返回</button>&nbsp;
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('Comment/delete',array('model'=>'Comment','status'=>9))}" target-form="ids">删除</button>&nbsp;
+
+                    <form action="{:U('Comment/index')}" method="post" class="form">
+                        <input type="text" name="member_nickname" value="{$_REQUEST['member_nickname']}" placeholder="评论人昵称" >
+                        <input type="text" name="user_nickname" value="{$_REQUEST['user_nickname']}" placeholder="被评论人昵称">
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>微记标题</th>
+                            <th>评论人昵称</th>
+                            <th>被评论人昵称</th>
+                            <th>评价内容</th>
+                            <th>评价时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['title']}</td>
+                                <td>{$row['member_nickname']}</td>
+                                <td>{$row['user_nickname']|default='直接回复'}</td>
+                                <td>{$row['content']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <!--<a href="{:U('Comment/detail',array('id'=>$row['id']))}" title="明细" class="tip-bottom">-->
+                                        <!--<span class="label label-success">明细</span></a>&nbsp;-->
+
+                                    <a href="{:U('Comment/delete',array('model'=>'Comment','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

@@ -1,0 +1,53 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-file"></i>
+                    </span>
+                    <h5>消息详情</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="invoice-content">
+                        <div class="invoice-head">
+                            <div class="invoice-meta">
+                                用户昵称<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['nickname']}</h5>
+
+                            <div class="invoice-meta">
+                                消息类型<span class="invoice-number"></span>
+                            </div>
+                            <h5>
+                                <eq name="row['type']" value="1">系统消息</eq>
+                                <eq name="row['type']" value="2">订单消息</eq>
+                            </h5>
+
+                            <div class="invoice-meta">
+                                消息大标题<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['headline']}</h5>
+
+                            <div class="invoice-meta">
+                                信息内容<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['content']}</h5>
+
+                            <div class="invoice-meta">
+                                创建时间<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['create_time']|date='Y-m-d H:i:s',###}</h5>
+                            <br>
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

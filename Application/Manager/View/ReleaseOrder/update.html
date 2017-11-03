@@ -1,0 +1,174 @@
+<extend name="Public/base"/>
+<block name="main">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">订单消息</a></li>
+                    </ul>
+                </div>
+                <div class="widget-ad_desc tab-ad_desc nopadding">
+                    <div id="tab1" class="tab-pane active">
+                    <form class="form-horizontal" method="post" action="{:U('ReleaseOrder/update')}">
+                        <input type="hidden" name="model" value="ReleaseOrder">
+                        <input type="hidden" name="id" value="{$row['id']}">
+
+                        <div class="control-group">
+                            <label class="control-label">用户昵称</label>
+                            <div class="controls">
+                                <input type="text" name="" value="{$row['nickname']}" readonly>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">订单标题</label>
+                            <div class="controls">
+                                <input type="text" name="title" value="{$row['title']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">订单类型</label>
+                            <div class="controls">
+                                <select name="type" disabled>
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['type'] eq 1">selected</if> >帮带订单</option>
+                                    <option value="2" <if condition="$row['type'] eq 2">selected</if> >求带订单</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">悬赏类型</label>
+                            <div class="controls">
+                                <select name="reward_type" disabled>
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['reward_type'] eq 1">selected</if> >悬赏订单</option>
+                                    <option value="2" <if condition="$row['reward_type'] eq 2">selected</if> >非悬赏订单</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">出发国家</label>
+                            <div class="controls">
+                                <select name="g_country">
+                                    <option value="">请选择</option>
+                                    <volist name="country" id="g_country">
+                                        <option value="{$g_country['country_id']}" <if condition="$row['g_country'] eq $g_country['country_id']">selected</if>>{$g_country['country_cn']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">出发城市</label>
+                            <div class="controls">
+                                <input type="text" name="g_city" value="{$row['g_city']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">目的国家</label>
+                            <div class="controls">
+                                <select name="d_country">
+                                    <option value="">请选择</option>
+                                    <volist name="country" id="d_country">
+                                        <option value="{$d_country['country_id']}" <if condition="$row['d_country'] eq $d_country['country_id']">selected</if>>{$d_country['country_cn']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">抵达城市</label>
+                            <div class="controls">
+                                <input type="text" name="d_city" value="{$row['d_city']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">出发时间</label>
+
+                            <div class="controls">
+                                <input type="text" name="start_time" value="{$row['start_time']}" class="datetime">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">截止时间</label>
+
+                            <div class="controls">
+                                <input type="text" name="end_time" value="{$row['end_time']}" class="datetime">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">带人数量</label>
+                            <div class="controls">
+                                <input type="text" name="people_num" value="{$row['people_num']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">带物公斤数</label>
+                            <div class="controls">
+                                <input type="text" name="goods_weight" value="{$row['goods_weight']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">带人单价</label>
+                            <div class="controls">
+                                <input type="text" name="people_money" value="{$row['people_money']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">带物单价</label>
+                            <div class="controls">
+                                <input type="text" name="goods_money" value="{$row['goods_money']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">交易地址</label>
+                            <div class="controls">
+                                <input type="text" name="trade_address" value="{$row['trade_address']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">备注信息</label>
+                            <div class="controls">
+                                <textarea name="remark">{$row['remark']}</textarea>
+                                {:hook('adminArticleEdit', array('name'=>'remark','value'=>$row['remark']))}
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <!--<button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">保 存</button>-->
+                        </div>
+                    </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

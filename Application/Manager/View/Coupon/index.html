@@ -1,0 +1,76 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title widget-title-search">
+                    <button class="btn btn-success href" url="{:U('Coupon/add')}" target-form="ids">新增</button>&nbsp;
+                    <!--<button class="btn btn-inverse ajax-post" url="{:U('Coupon/forbid',array('model'=>'Coupon','status'=>0))}" target-form="ids">禁用</button>&nbsp;-->
+                    <!--<button class="btn btn-info ajax-post" url="{:U('Coupon/resume',array('model'=>'Coupon','status'=>1))}" target-form="ids">启用</button>&nbsp;-->
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('Coupon/delete',array('model'=>'Coupon','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <form action="{:U('Coupon/index')}" method="post" class="form">
+                        <input type="text" name="start_time" value="{$_REQUEST['start_time']}" placeholder="开始时间" style="width: 140px;" class="datetime">
+                        <input type="text" name="end_time" value="{$_REQUEST['end_time']}" placeholder="结束时间" style="width: 140px;" class="datetime">
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                                <th>ID</th>
+                                <th>满足金额</th>
+                                <th>优惠金额</th>
+                                <th>兑换积分</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>创建时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['satisty_price']}</td>
+                                <td>{$row['discount_price']}</td>
+                                <td>{$row['integral']}</td>
+                                <td>{$row['start_time']|date="Y-m-d",###}</td>
+                                <td>{$row['end_time']|date="Y-m-d",###}</td>
+                                <td>{$row['create_time']|date="Y-m-d H:i:s",###}</td>
+                                <td>{$row['status']|couponStatus}</td>
+                                <td>
+                                    <eq name="row['status']" value="0">
+                                            <a href="{:U('Coupon/grant',array('model'=>'Coupon','id'=>$row['id'],'status'=>1))}" title="发放" class="tip-bottom ajax-get">
+                                                <span class="label label-info">发放</span></a>&nbsp;
+                                            <a href="{:U('Coupon/update',array('id'=>$row['id']))}" title="编辑" class="tip-bottom">
+                                                <span class="label label-success">编辑</span></a>&nbsp;
+                                        <else/>
+                                            <a href="{:U('MemberCoupon/index',array('coupon_id'=>$row['id']))}" title="查看使用情况" class="tip-bottom">
+                                                <span class="label label-success">查看使用情况</span></a>&nbsp;
+                                    </eq>
+
+                                    <a href="{:U('Coupon/delete',array('model'=>'Coupon','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>

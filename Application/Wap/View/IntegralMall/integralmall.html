@@ -1,0 +1,66 @@
+<extend name="Public/base" />
+<block name="main">
+    <body>
+    <header class="bgz colb">
+        <span class="left"></span>
+    		<span class="pfr mar10" linkto="{:U('IntegralMall/jilu')}">
+			兑换记录
+    		</span>
+        <span class="">积分商场</span>
+    </header>
+    <div class="content" style="padding: 50px 0px;">
+        <div class="goodlist ovhid">
+            
+        </div>
+    </div>
+    <div class="botarea bgb textcen lh50">
+        <span class="colr iconzuan">我的积分：<span class="myfen"></span></span>
+    </div>
+    </body>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/touch.min.js"></script>
+    <script type="text/javascript">
+    if (top_user) {
+        requestUrl("{:U('Api/MerActive/integralList')}",{m_id:top_user.m_id},viewAddList);
+    }else{
+        getUserInfo("{:U('Member/login')}");
+    }
+    function viewAddList(res) {
+        console.log(res);
+        if (res.flag == "success") {
+            var addList = res.data.integral_list;
+            if ( addList.length > 0) {
+                viewAdd(addList);
+            }
+            $(".myfen").text(res.data.intrgral_balance);
+        }else{
+            alert(res.message);
+        }
+    }
+
+    function viewAdd(addressList){
+        var str = "";
+        for(var index in addressList){
+            var obj = addressList[index];
+            str += '<div class="good bgb">'
+                +'<div class="imgbag">'
+                    +'<img src="'+obj.pic+'" />'
+                +'</div>'
+                +'<div class="pad0-10">'
+                    +'<div class="goodname lh20">'
+                        +obj.goods_name
+                    +'</div>'
+                    +'<div class="lh30 price fs14">'
+                        +'<div class="fr bgbtn lh14 colb mar5 pad5-10 borad4" linkto="{:U('IntegralMall/contactway')}&integral_id='+obj.integral_id+'">兑换</div>'
+                        +'积分：<span class="fs16 colr">'+obj.integral+'</span>'
+                    +'</div>'
+                +'</div>'
+            +'</div>';
+        }
+        $(".goodlist").html(str);
+        top_linkto();
+    }
+    </script>
+
+</block>

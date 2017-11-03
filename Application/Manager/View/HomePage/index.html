@@ -1,0 +1,77 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('HomePage/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <form action="{:U('HomePage/index')}" method="post" class="form">
+                        <input type="text" name="type_name" value="{$_REQUEST['type_name']}" placeholder="分类名称">
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>分类名称</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['type_name']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>{$row['is_app_show']|mTypeIsAppShowStatus}</td>
+
+                                <td>
+                                    <a href="{:U('HomePage/update',array('id'=>$row['id']))}" title="编辑" class="tip-bottom">
+                                        <span class="label label-success">编辑</span></a>&nbsp;
+                                    <!--<eq name="row['is_app_show']" value="0">-->
+                                        <!--<a href="{:U('HotWord/hotWordResume',array('model'=>'MerchantType','ids'=>$row['id'],'is_app_show'=>1))}" title="显示" class="tip-bottom ajax-get">-->
+                                            <!--<span class="label label-info">显示</span></a>&nbsp;-->
+                                        <!--<else/>-->
+                                        <!--<a href="{:U('HotWord/hotWordResume',array('model'=>'MerchantType','ids'=>$row['id'],'is_app_show'=>0))}" title="隐藏" class="tip-bottom ajax-get">-->
+                                            <!--<span class="label label-inverse">隐藏</span></a>&nbsp;-->
+                                    <!--</eq>-->
+                                    <!--<a href="{:U('HotWord/delete',array('model'=>'MerchantType','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">-->
+                                        <!--<span class="label label-important">删除</span></a>-->
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

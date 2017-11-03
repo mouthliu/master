@@ -1,0 +1,90 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <div class="widget-box">
+        <!--// 搜索-->
+        <div class="widget-title widget-title-search">
+            <form action="{:U('Statis/index')}" method="post" class="form">
+                <input type="text" name="startTime" class="laydate-icon" id="startTime" value="{$_REQUEST['startTime']}" readonly>
+                <input type="text" name="endTime"  class="laydate-icon" id="endTime" value="{$_REQUEST['endTime']}" readonly>
+                <button class="btn btn-inverse">查询</button>
+            </form>
+        </div>
+
+        <div class="row-fluid">
+                <div class="span12" id="main" style="height: 600px;"></div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/echarts.min.js"></script>
+    <script src="__STATIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '{$day_date_flag}'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: [{$x_date}]
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{$day_line}]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+    <!--//时间插件-->
+    <script>
+        var start = {
+            elem: '#startTime',
+            format: 'YYYY/MM/DD',
+            min: '{$totalTime["min_time"]}',
+            max: '{$totalTime["max_time"]}',
+//            istime: true,
+            istoday: false,
+            choose: function(datas){
+                end.min = datas;
+                end.start = datas
+            }
+        };
+        var end = {
+            elem: '#endTime',
+            format: 'YYYY/MM/DD',
+            min: '{$totalTime["min_time"]}',
+            max: '{$totalTime["max_time"]}',
+//            istime: true,
+            istoday: false,
+            choose: function(datas){
+                start.max = datas;
+            }
+        };
+        laydate(start);
+        laydate(end);
+    </script>
+
+</block>

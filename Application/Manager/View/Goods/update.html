@@ -1,0 +1,170 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">商品信息</a></li>
+                    </ul>
+                </div>
+                <div class="widget-content tab-content nopadding">
+                    <div id="tab1" class="tab-pane active">
+                    <form class="form-horizontal" method="post" action="{:U('Goods/update')}">
+                        <input type="hidden" name="model" value="Goods"><input type="hidden" name="id" value="{$_REQUEST['id']}">
+                        <div class="control-group">
+                            <label class="control-label">商品名称</label>
+                            <div class="controls">
+                                <input type="text" name="goods_name" value="{$row['goods_name']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">大师昵称</label>
+                            <div class="controls">
+                                <input type="text" name="nickname" value="{$row['nickname']}" disabled>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品父级类别</label>
+                            <div class="controls">
+                                <input type="text" name="first_name" value="{$row['first_name']}" disabled>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品子级类别</label>
+                            <div class="controls">
+                                <input type="text" name="type_name" value="{$row['type_name']}" disabled>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">上下级状态</label>
+                            <div class="controls">
+                                <select name="frame">
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['frame'] eq 1">selected</if> >上架</option>
+                                    <option value="2" <if condition="$row['frame'] eq 2">selected</if> >下架</option>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品图片</label>
+                            <div class="controls">
+                                {:hook('upload',array('is_first'=>1,'unique_sign'=>'goods_pic','field_name'=>'goods_pic','field_value'=>$row['goods_pic'],'save_path'=>'Goods'))}
+                                <span class="help-block">图片尽量控制在100K-300K，尺寸：400*400</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">首页是否显示</label>
+                            <div class="controls" class="controls">
+                                <select name="is_show">
+                                    <option value="">请选择</option>
+                                    <option value="0" <if condition="$row['is_show'] eq '0'">selected</if> >不显示</option>
+                                    <option value="1" <if condition="$row['is_show'] eq 1">selected</if> >显示</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品价格</label>
+                            <div class="controls">
+                                <input type="text" name="price" value="{$row['price']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品运费</label>
+                            <div class="controls">
+                                <input type="text" name="freight" value="{$row['freight']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">可兑换积分</label>
+                            <div class="controls">
+                                <input type="text" name="integral" value="{$row['integral']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">排列顺序</label>
+                            <div class="controls">
+                                <input type="text" name="sort" value="{$row['sort']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">商品描述</label>
+                            <div class="controls">
+                                <textarea rows="20" cols="50" name="goods_info">{$row['goods_info']}</textarea>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">保 存</button>
+                        </div>
+                    </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/layer/layer.js"></script>
+    <script>
+        $(function(){
+            $('#first_type').blur(function(){
+                $('#goods_type option[value!=""]').remove();
+                $.ajax({
+                    type: 'POST',
+                    url:  "{:U('Goods/libraryCity')}",
+                    data:{
+                        parent_id: $('#first_type').val()
+                    },
+                    success:function(response, status, xhr){
+                        for(var i=0; i<response.length; i++){
+                            var str = "<option value="+ response[i].goods_type_id + ">"+response[i].type_name +" </option>";
+                            $('#goods_type').append(str);
+                        }
+                    }
+                })
+            });
+        })
+
+        $(document).on('dblclick','img',function(){
+            if($(this).attr('class') != 'big-pic'){
+                var str = $(this).attr('src');
+                layer.open({
+                    type: 1,
+                    title: false,
+                    maxWidth:'566px',
+                    maxHeight:'343px',
+                    area: 'auto',
+                    closeBtn: 0,
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    content: "<img class='big-pic' src='"+str+"'/>"
+                });
+            }
+        });
+    </script>
+</block>

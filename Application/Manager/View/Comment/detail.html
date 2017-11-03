@@ -1,0 +1,67 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-file"></i>
+                    </span>
+                    <h5>查看评价详情</h5>
+                </div>
+                <div class="widget-content">
+
+                    <div class="invoice-content">
+                        <div class="invoice-head">
+                            <div class="invoice-meta">
+                                评价用户<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['account']}</h5>
+                            <div class="invoice-meta">
+                                被评价商家<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['shop_name']}</h5>
+                            <div class="invoice-meta">
+                                被评价员工<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['employee_name']}</h5>
+                            <div class="invoice-meta">
+                                描述相符评分<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['describe _score']}分</h5>
+                            <div class="invoice-meta">
+                                店铺环境评分<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['environment_score']}分</h5>
+                            <div class="invoice-meta">
+                                服务态度评分<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['attitude_score']}分</h5>
+                            <div class="invoice-meta">
+                                评价内容<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['content']}</h5>
+                            <div class="invoice-meta">
+                                评价时间<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['create_time']|date='Y-m-d H:i:s',###}</h5>
+                            <div class="invoice-meta">
+                                评价图片<span class="invoice-number"></span>
+                            </div>
+                            <h5>
+                                <volist name="row['comment_picture']" id="picture">
+                                    <img src="{$picture['path']}" width="30%"> &nbsp;
+                                </volist>
+                            </h5>
+                            <br>
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

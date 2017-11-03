@@ -1,0 +1,65 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn btn-success confirm ajax-post" url="{:U('MerServicePackage/resume',array('model'=>'ServicePackage','ids'=>$row['id'],'status'=>1))}" target-form="ids">审核</button>&nbsp;
+                    				 <form action="{:U('EmpServicePackage/index')}" method="post" class="form">
+							<input type="text" name="keywords" value="{$_REQUEST['keywords']}" placeholder="商家名称">
+							<button class="btn btn-inverse">查询</button>
+						</form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+							<th>商家名称</th>
+                            <th>套餐服务名称</th>
+                            <th>价格</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+								<td>{$row['merchant_name']}</td>
+                                <td>{$row['package_name']}</td>
+                                <td>{$row['price']}</td>
+                                <td>{$row['status']|get_service_title}</td>
+                                <td>
+                                    <eq name="row['status']" value="0">
+                                        <a href="{:U('MerServicePackage/resume',array('model'=>'ServicePackage','ids'=>$row['id'],'status'=>abs(1-$row['status'])))}" title="{$row['status']|show_service_name}" class="tip-bottom ajax-get">
+                                            <span class="label label-info">{$row['status']|show_service_name}</span></a>&nbsp;
+											
+									<else/>
+                                        <a href="{:U('MerServicePackage/forbid',array('model'=>'ServicePackage','ids'=>$row['id'],'status'=>abs(1-$row['status'])))}" title="{$row['status']|show_service_name}" class="tip-bottom ajax-get">
+                                        <span class="label label-inverse">{$row['status']|show_service_name}</span></a>&nbsp;
+                                    </eq>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>

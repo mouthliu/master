@@ -1,0 +1,83 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('Message/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <button class="btn href" url="{:U('Message/index')}" target-form="ids">返回</button>&nbsp;
+                    <form action="{:U('Message/message')}" method="post" class="form">
+                        <input type="text" name="nickname" value="{$_REQUEST['nickname']}" placeholder="用户昵称" style="width:140px;">
+                        <!--<select name="type" style="width:140px; margin-bottom: 0px;">-->
+                            <!--<option value="">请选择</option>-->
+                            <!--<option value="1" <if condition="$_REQUEST['type'] eq 1"> selected</if>>系统消息</option>-->
+                            <!--<option value="2" <if condition="$_REQUEST['type'] eq 2"> selected</if>>订单消息</option>-->
+                        <!--</select>-->
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>ID</th>
+                            <th>用户名称</th>
+                            <th>消息类型</th>
+                            <th>标题</th>
+                            <th>发布时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['nickname']}</td>
+                                <td>
+                                    <eq name="row['type']" value="1">服务订单</eq>
+                                    <eq name="row['type']" value="2">悬赏信息</eq>
+                                    <eq name="row['type']" value="3">宝物信息</eq>
+                                    <eq name="row['type']" value="4">系统消息</eq>
+                                </td>
+                                <td>{$row['headline']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <a href="{:U('Message/detail',array('id'=>$row['id']))}" title="详情" class="tip-bottom">
+                                        <span class="label label-info">明细</span></a>&nbsp;
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

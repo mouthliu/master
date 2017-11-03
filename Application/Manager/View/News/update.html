@@ -1,0 +1,92 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-plus"></i>
+                    </span>
+                    <h5>新闻详情</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form class="form-horizontal" method="post" action="{:U('News/update')}" id="form">
+                        <input type="hidden" name="model" value="News">
+                        <input type="hidden" name="id" value="{$row['id']}">
+                        <div class="control-group">
+                            <label class="control-label">新闻标题</label>
+                            <div class="controls">
+                                <input type="text" name="title" value="{$row['title']}">
+                                <span class="help-block">30个字符以内</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">大师昵称</label>
+                            <div class="controls">
+                                <input type="text" name="nickname" value="{$row['nickname']}" disabled>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">新闻图片</label>
+                            <div class="controls">
+                                {:hook('upload',array('is_first'=>1,'unique_sign'=>'advert_path','field_name'=>'picture','field_value'=>$row['picture'],'save_path'=>'News'))}
+                                <span class="help-block">图片尽量控制在100K-500K，尺寸：350*350</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">新闻类别</label>
+                            <div class="controls">
+                                <select name="news_type">
+                                    <option value="">新闻类别</option>
+                                    <volist name="news_type" id="news_type">
+                                        <option value="{$news_type['news_type_id']}" <if condition="$row['news_type'] eq $news_type['news_type_id']">selected</if> >{$news_type['type_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">文章内容</label>
+                            <div class="controls">
+                                <textarea name="content" cols="50" rows="20">{$row['content']}</textarea>
+                                <!--{:hook('adminArticleEdit', array('name'=>'content','value'=>$row['content']))}-->
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">首页是否显示</label>
+                            <div class="controls">
+                                <select name="is_hot">
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['is_hot'] eq 1">selected</if> >首页显示</option>
+                                    <option value="2" <if condition="$row['is_hot'] eq 2">selected</if> >首页不显示</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">排列序号</label>
+                            <div class="controls">
+                                <input type="text" name="sort" value="{$row['sort']}">
+                                <span class="help-block">请填写数字</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <button class="btn btn-info ajax-post no-refresh" type="submit" id="submit" target-form="form-horizontal">发 布</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

@@ -1,0 +1,48 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <include file="Public/uploadify"/>
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-list-alt"></i>
+                    </span>
+                    <h5>导入数据</h5>
+                </div>
+                <div class="widget-content">
+
+                    <div class="invoice-content">
+                        <div class="invoice-head">
+                            <div class="invoice-meta">
+                                1、请下载下面的excel模板文件，严格按照模板提示格式填写。
+                            </div>
+                            <div class="invoice-meta">
+                                2、导入文件暂时只支持xls格式。
+                            </div>
+                            <div class="invoice-meta">
+                                3、请严格按照模板文件及提示填写数据，否则将造成数据库数据混乱，后果自负。
+                            </div>
+                            <div class="invoice-meta">
+                                4、一次导入数据请控制在1000行以内。
+                            </div>
+                            <br>
+                            <h5><a href="{:U('UpDownLoad/download',array('id'=>68))}" class="underline">会员数据批量导入模板.xls [ 下载 ]</a></h5>
+                            <br>
+                            <form class="form-horizontal" method="post" action="{:U('Member/import')}">
+                                <div class="control-group">
+                                    {:hook('upload',array('unique_sign'=>'import_file','field_name'=>'import_file','field_value'=>array(),'save_path'=>'ImportTemplate','type'=>'attachment','exts'=>'xls'))}
+                                </div>
+                                <br>
+                                <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>&nbsp;
+                                <button class="btn btn-info ajax-post" target-form="form-horizontal" data-ing-html="数据正在导入，请稍后..." type="submit">确认导入</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

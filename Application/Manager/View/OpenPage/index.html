@@ -1,0 +1,70 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn btn-success href" url="{:U('OpenPage/add')}" target-form="ids">新增</button>&nbsp;
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('OpenPage/remove',array('model'=>'OpenPage','status'=>9))}" target-form="ids">删除</button>&nbsp;
+
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>图片展示</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td><a class="open-pic-button" href="javascript:;" data-id="{$row['picture']}">点击显示</a></td>
+
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <a href="{:U('OpenPage/update',array('id'=>$row['id']))}" title="编辑" class="tip-bottom">
+                                        <span class="label label-success">编辑</span></a>&nbsp;
+                                    <a href="{:U('OpenPage/remove',array('model'=>'OpenPage','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/layer/layer.js"></script>
+    <script>
+        $(document).on('click','.open-pic-button',function(){
+            var str = $(this).data('id');
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['310px', '552px'],
+                closeBtn: 0,
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: "<img src='"+str+"'/>"
+            });
+        });
+
+    </script>
+</block>

@@ -1,0 +1,84 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn btn-success href" url="{:U('GoodsType/add',array('parent_id'=>$_SESSION['parent_id']))}" target-form="ids">新增</button>&nbsp;
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('GoodsType/delete',array('model'=>'GoodsType','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <button class="btn href" url="{:U('GoodsType/index')}">返 回</button>　
+                    <form action="{:U('GoodsType/sonindex')}" method="post" class="form">
+                        <input type="text" name="type_name" value="{$_REQUEST['type_name']}" placeholder="分类名称" style="width:140px;">
+
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>ID</th>
+                            <th>类别名称</th>
+                            <th>创建时间</th>
+                            <th>宝阁是否显示</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['type_name']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <eq name="row['is_show']" value="0">不显示</eq>
+                                    <eq name="row['is_show']" value="1">显示</eq>
+                                </td>
+                                <td>
+                                    <eq name="row['status']" value="0">正常</eq>
+                                    <eq name="row['status']" value="1">正常</eq>
+                                </td>
+                                <td>
+                                    <a href="{:U('GoodsType/update',array('id'=>$row['id'],'parent_id'=>$row['parent_id']))}" title="编辑" class="tip-bottom">
+                                        <span class="label label-success">编辑</span></a>&nbsp;
+
+                                    <a href="{:U('GoodsType/remove',array('model'=>'GoodsType','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

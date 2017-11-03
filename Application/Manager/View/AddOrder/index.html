@@ -1,0 +1,125 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <button class="btn href" url="{:U('ReleaseOrder/index')}" target-form="ids">返回</button>&nbsp;
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('AddOrder/delete',array('model'=>'AddOrder','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <form action="{:U('AddOrder/index')}" method="post" class="form">
+                        <input type="text" name="nickname" value="{$_REQUEST['nickname']}" placeholder="申请人昵称" style="width: 140px;">
+                        <input type="text" name="order_sn" value="{$_REQUEST['order_sn']}" placeholder="订单编号" style="width: 140px;">
+                        <select name="pay_type" style="margin-top: 10px; width: 140px;">
+                            <option value="">支付方式</option>
+                            <option value="0" <if condition="$_REQUEST['pay_type'] eq '0'">selected</if> >未支付</option>
+                            <option value="2" <if condition="$_REQUEST['pay_type'] eq 2">selected</if> >支付宝支付</option>
+                            <option value="3" <if condition="$_REQUEST['pay_type'] eq 3">selected</if> >微信支付</option>
+                            <option value="4" <if condition="$_REQUEST['pay_type'] eq 4">selected</if> >余额支付</option>
+                        </select>
+                        <select name="pay_status" style="margin-top: 10px; width: 140px;">
+                            <option value="">支付状态</option>
+                            <option value="0" <if condition="$_REQUEST['pay_status'] eq '0'">selected</if> >未支付</option>
+                            <option value="1" <if condition="$_REQUEST['pay_status'] eq 1">selected</if> >已支付</option>
+                        </select>
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>订单ID</th>
+                            <th>订单标题</th>
+                            <th>订单编号</th>
+                            <th>申请人昵称</th>
+                            <th>带人数量</th>
+                            <th>带物重量</th>
+                            <th>支付方式</th>
+                            <th>支付状态</th>
+                            <th>支付金额</th>
+                            <th>订单总金额</th>
+                            <th>创建时间</th>
+                            <th>订单状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['title']}</td>
+                                <td>{$row['order_sn']}</td>
+                                <td>{$row['nickname']}</td>
+                                <td>{$row['people_num']}位</td>
+                                <td>{$row['goods_weight']}公斤</td>
+                                <td>
+                                    <if condition="$row['pay_type'] eq 0">未支付</if>
+                                    <if condition="$row['pay_type'] eq 1">余额支付</if>
+                                    <if condition="$row['pay_type'] eq 2">支付宝支付</if>
+                                    <if condition="$row['pay_type'] eq 3">微信支付</if>
+                                    <if condition="$row['pay_type'] eq 4">余额支付</if>
+                                </td>
+                                <td>
+                                    <if condition="$row['pay_status'] eq 0">未支付</if>
+                                    <if condition="$row['pay_status'] eq 1">已支付</if>
+                                </td>
+                                <td>{$row['pay_price']}</td>
+                                <td>{$row['total_price']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <if condition="$row['status'] eq 0">等待支付</if>
+                                    <if condition="$row['status'] eq 1">等待接单</if>
+                                    <if condition="$row['status'] eq 2">等待取货</if>
+                                    <if condition="$row['status'] eq 3">等待收货</if>
+                                    <if condition="$row['status'] eq 4">等待收货</if>
+                                    <if condition="$row['status'] eq 5">等待评价</if>
+                                    <if condition="$row['status'] eq 6">订单完成</if>
+                                    <if condition="$row['status'] eq 7">拒绝接单</if>
+                                    <if condition="$row['status'] eq 8">订单已取消</if>
+                                    <if condition="$row['status'] eq 9">订单已删除</if>
+                                    <if condition="$row['status'] eq 10">订单预定中</if>
+                                    <if condition="$row['status'] eq 11">等待评价</if>
+                                    <if condition="$row['status'] eq 12">预定失败</if>
+                                </td>
+                                <td>
+                                    <a href="{:U('AddOrder/update',array('id'=>$row['id']))}" title="详情" class="tip-bottom">
+                                        <span class="label label-success">详情</span></a>&nbsp;
+                                    <a href="{:U('AddOrder/delete',array('model'=>'AddOrder','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

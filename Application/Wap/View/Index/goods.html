@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<link rel="stylesheet" href="__PUBLIC__/Wap/css/public.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wap/css/index.css"/>
+		<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Wap/js/public.js"></script>
+		<title>商品</title>
+		<style type="text/css">
+			body{
+				background:#f6f6f6;
+				padding-bottom:4.875rem;
+			}
+			.out img{
+				width:auto;
+				height:auto;
+			}
+			.out.on img{
+				height:100%;
+				width:auto;
+			}
+			.out.onn img{
+				width:100%;
+			}
+			.out{
+				overflow: hidden;
+				align-items:center;
+				justify-content:center;
+				display:-webkit-box;
+				display:-webkit-flex;
+				display:flex;
+			}
+		</style>
+		<script>
+			$(function(){
+				$('.pad10-0:first').addClass('on');
+				$('.pad0-15').children().click(function(){
+					$(this).addClass('on');
+					$(this).siblings().removeClass('on');
+				})
+				//图片居中裁剪显示
+				var wid=$('.out img').width();
+				var hh=$('.out img').height();
+				if(wid>=hh){
+					$('.out').addClass('on').removeClass('onn');
+				}else{
+					$('.out').addClass('onn').removeClass('on');
+				}
+			})
+		</script>
+	</head>
+	<body>
+		<div class="augur-head weui-flex pad0-15">
+			<!--<a href="#" class="btn-jx return index-icon20"></a>-->
+			<div class="weui-flex__item textcen mal10">
+				<span class="clearb">
+					<a href="#" class="fl on">商品</a>
+					<a href="#two" class="fl mal20">评价</a>
+					<a href="#three" class="fl mal20">详情</a>
+				</span>
+			</div>
+			<!--<a href="#" class="augur-shopcar mal10 btn-jx index-icon20"></a>-->
+			<!--<a href="#" class="augur-share mal10 btn-jx index-icon20"></a>-->
+		</div>
+		<div class="bg-f">
+			<img src="{$goods['goods_pic']}" class="auto-img"/>
+			<p class="pad10-15 fs15">{$goods['goods_name']}</p>
+		</div>
+		<div class="pad0-15 bg-f mat10">
+			<div class="lh25 h50 ovhid borb1 pad10-0">
+				<span class="fl">数量选择</span>
+				<span class="fr ovhid boras3 fc-gray bor1 mat2">
+					<span class="fl pad0-15 borr1 goods-reduce btn-jx">-</span>
+					<span class="fl pad0-20 borr1 goods-count">1</span>
+					<span class="fl pad0-15 goods-add btn-jx">+</span>
+				</span>
+			</div>
+			<a class="h50 lh20 clearb pad15-0 fs12 fc-gray disb btn-jx" href="http://www.dashiwang.net">
+				<span class="fl fs13 fc0">优惠</span>
+				<span class="goods-label mal10 fl">积分</span>
+				<span class="fl mal5">下单可得{$goods['integral']}积分</span>
+				<span class="goods-label mal10 fl">优惠券</span>
+				<span class="fl mal5">领取优惠券</span>
+				<span class="index-icon10 augur-right fr"></span>
+			</a>
+		</div>
+		<a class="pad15 bg-f mat10 weui-flex h85 btn-jx" href="#">
+			<div class="img55 out" style="border-radius: 100%;"><img src="{$goods['head_pic']}" /></div>
+			<span class="mal5 pad5-0 weui-flex__item disb">
+				<span class="ovhid h20 lh20 wid">
+					<span class="fc-ye fs15 fl">{$goods['nickname']}</span>
+					<if condition="$goods['auth_status'] eq 3">
+						<span class="fl augur-diamond index-icon18 mal5"></span>
+					</if>
+					<if condition="$goods['social_status'] eq 1">
+						<span class="fl augur-xie index-icon18 mal5"></span>
+					</if>
+				</span>
+				<span class="mat5 ovhid wid">
+					<volist name="field_info" id="field_info">
+						<span class="btn-jx fl mar5 goods-label1">{$field_info['field_name']}</span>
+					</volist>
+				</span>
+			</span>
+			<span class="fc-gray lh65 fs12 text-over" style="width:6.90625rem;height:5.28125rem;">大师的宝阁</span>
+			<!--<span class="index-icon10 augur-right mal5"></span>-->
+		</a>
+		<div style="height: 1px;"><a name="two" ></a></div>
+		<div class="bg-f mat10">
+			<div class="h50 pad10-15 borb1 ovhid btn-jx">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10 fs16 lh30">用户评价（{$goods['comment_num']}）</span>
+				<!--<span class="fr mal10 index-icon13 augur-right"></span>-->
+				<!--<span class="fr fc-gray mat4">查看更多</span>-->
+			</div>
+			<div class="pad0-15 fs15">
+				<volist name="comment" id="comment">
+					<div class="pad10-0 lh20 borb1">
+						<div class="lh30 ovhid h30">
+							<div class="img30-r fl out"><img src="{$comment['head_pic']}" /></div>
+							<span class="fl mal10 fc-gray">{$comment['nickname']}</span>
+							<for start="0" end="$comment['evaluate_star']">
+								<span class="fr mal5 index-icon13 augur-star on"></span>
+							</for>
+						</div>
+						<p class="mat10 lh20">{$comment['content']}</p>
+						<p class="lh20 fs12 fc-gray">{$comment['create_time']}</p>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<div class="bg-f mat10">
+			<div class="h50 pad10-15 borb1 ovhid btn-jx">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10 fs16 lh30">产品参数</span>
+			</div>
+			<div class="lh30 fc-gray fs15 borb1 pad0-15">{$goods['goods_info']}</div>
+		</div>
+		<div style="height:1px;"><a name="three"></a></div>
+		<div class="h50 pad10-15 borb1 ovhid btn-jx bg-f">
+			<span class="fl h30 bar-red"></span>
+			<span class="fl mal10 fs16 lh30">商品详情</span>
+		</div>
+		<volist name="pic_info" id="pic_info">
+			<!--<div class="goods-img fs0 out">-->
+				<img src="{$pic_info['picture']}" class="goods-img fs0" style="width: 100%;"/>
+			<!--</div>-->
+		</volist>
+
+		<div class="augur-bom foot h50 weui-flex textcen bg-f">
+			<div class="weui-flex__item fs12 weui-flex lh15">
+				<a href="http://www.dashiwang.net" class="weui-flex__item borr1 btn-jx">
+					<img src="__PUBLIC__/Wap/img/collect.png" />
+					<p>收藏</p>
+				</a>
+				<a href="http://www.dashiwang.net" class="weui-flex__item borr1 btn-jx">
+					<img src="__PUBLIC__/Wap/img/service.png" />
+					<p>客服</p>
+				</a>
+				<a href="http://www.dashiwang.net" class="weui-flex__item btn-jx">
+					<img src="__PUBLIC__/Wap/img/shop.png" />
+					<p>店铺</p>
+				</a>
+			</div>
+			<a href="http://www.dashiwang.net" class="wi025 lh50 fc-f btn-jx bg-pink">加入购物车</a>
+			<a href="http://www.dashiwang.net" class="wi025 lh50 fc-f btn-jx bg-red">立即购买</a>
+		</div>
+	</body>
+</html>

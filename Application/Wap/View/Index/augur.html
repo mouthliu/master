@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<link rel="stylesheet" href="__PUBLIC__/Wap/css/public.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wap/css/index.css"/>
+		<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Wap/js/public.js"></script>
+		<title>大师</title>
+		<style type="text/css">
+			body{
+				background:#f6f6f6;
+				padding-bottom:4.875rem;
+			}
+			.out img{
+				width:auto;
+				height:auto;
+			}
+			.out.on img{
+				height:100%;
+				width:auto;
+			}
+			.out.onn img{
+				width:100%;
+			}
+			.out{
+				overflow: hidden;
+				align-items:center;
+				justify-content:center;
+				display:-webkit-box;
+				display:-webkit-flex;
+				display:flex;
+			}
+		</style>
+		<script>
+			$(function(){
+				$('.pad10-0:first').addClass('on');
+				$('.pad0-15').children().click(function(){
+					$(this).addClass('on');
+					$(this).siblings().removeClass('on');
+				})
+				//图片居中裁剪显示
+				var wid=$('.out img').width();
+				var hh=$('.out img').height();
+				if(wid>=hh){
+					$('.out').addClass('on').removeClass('onn');
+				}else{
+					$('.out').addClass('onn').removeClass('on');
+				}
+			})
+		</script>
+	</head>
+	<body>
+		<div class="augur-head weui-flex pad0-15">
+			<!--<a href="#" class="btn-jx return index-icon20"></a>-->
+			<div class="weui-flex__item textcen mal10">
+				<span class="clearb">
+					<a href="#" class="fl on">大师</a>
+					<a href="#two" class="fl mal20">服务</a>
+					<a href="#three" class="fl mal20">宝阁</a>
+				</span>
+			</div>
+			<!--<a href="#" class="augur-share mal10 btn-jx index-icon20"></a>-->
+		</div>
+		<div class="psr0 augur-bg1 weui-flex fc-f">
+			<div class="weui-flex align-justy out augur-bg1-img1">
+				<img src="{$master['head_pic']}"/>
+			</div>
+			<div class="mal20 weui-flex__item">
+				<p class="fs18">{$master['nickname']}</p>
+				<div class="ovhid augur-label mat10">
+					<volist name="field" id="field">
+						<if condition="$field['field_name'] neq ''"><a href="#" class="btn-jx fl mar10">{$field['field_name']}</a></if>
+					</volist>
+
+					<!--<a href="#" class="btn-jx fl mal10">观星望斗</a>-->
+				</div>
+				<div class="mat10 clearb h20 lh20">
+					<if condition="$master['auth_status'] eq 3">
+						<span class="fl augur-diamond index-icon18"></span>
+						<span class="fl mal5 mar10">官方认证</span>
+					</if>
+					<if condition="$master['social_status'] eq 1">
+						<span class="fl augur-xie index-icon18 "></span>
+						<span class="fl mal5 mar10">玄学协会</span>
+					</if>
+				</div>
+				<div class="clearb mat5 h20 lh20">
+					<span class="fl index-icon18 augur-medal"></span>
+					<span class="fl mal5">{$master['score']}</span>
+					<span class="fl augur-bill index-icon18 mal10"></span>
+					<span class="fl mal5">{$master['order_num']}单</span>
+				</div>
+			</div>
+		</div>
+		<div class="bg-f">
+			<div class="h50 pad10-15 borb1 ovhid btn-jx augur-clk1">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10 fs16 lh30">简介</span>
+				<span class="index-icon15 augur-down fr"></span>
+			</div>
+			<div class="augur-intro pad10-15 lh25 fc-gray hid0">
+				<if condition="$master['introduction'] neq ''">
+					<p>{$master['introduction']}</p>
+					<else/>
+					<p>暂无简介</p>
+				</if>
+			</div>
+		</div>
+		<div class="bg-f mat10">
+			<div style="height: 1px;"><a name="two"></a></div>
+			<div class="h50 pad10-15 borb1 ovhid btn-jx">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10 fs16 lh30">服务项目</span>
+			</div>
+			<div class="pad0-15">
+				<volist name="service" id="service">
+					<div class="pad10-0 weui-flex h75 lh20 fs12 borb1 augur-item">
+						<div class="img55 out"><img src="{$service['picture']}" /></div>
+						<div class="weui-flex__item mal10 pad5-0">
+							<p class="fs16">{$service['title']} <i class="fc-red">{$service['price']}元/次</i></p>
+							<p class="mat5 fc-gray">{$service['content']}</p>
+						</div>
+						<span class="cir-red"></span>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<div class="bg-f mat10">
+			<div class="h50 pad10-15 borb1 ovhid btn-jx">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10 fs16 lh30">缘主评价（{$master['comment_num']}）</span>
+			</div>
+			<div class="pad0-15 fs15">
+				<volist name="comment" id="comment">
+					<div class="pad10-0 lh20 borb1">
+						<div class="lh30 ovhid h30">
+							<img src="{$comment['head_pic']}" class="img30-r fl"/>
+							<span class="fl mal10 fc-gray">{$comment['nickname']}</span>
+							<for start="0" end="$comment['rank']">
+								<span class="fr mal5 index-icon13 augur-star on"></span>
+							</for>
+						</div>
+						<p class="mat10 lh20">{$comment['content']}</p>
+						<p class="lh20 fs12 fc-gray">{$comment['create_time']}</p>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<div class="bg-f mat10">
+			<a class="h50 pad10-15 ovhid btn-jx disb fc0 lh30 fs16" name="three">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10">大师宝阁</span>
+				<!--<span class="fr mal10 index-icon13 augur-right"></span>-->
+				<!--<span class="fr fc-gray">查看更多</span>-->
+			</a>  
+			<div class="augur-cont1">
+				<volist name="goods" id="goods">
+					<div class="augur-item1 weui-flex">
+						<div class="img100 out"><img src="{$goods['goods_pic']}" /></div>
+						<div class="weui-flex__item mal10">
+							<p>{$goods['goods_name']}</p>
+							<div class="fc-red fs12 mat5">￥<i class="fs16">{$goods['price']}</i><i class="fc-gray mal10">{$goods['order_num']}人付款</i></div>
+							<div class="ovhid h30 lh30 mat5">
+								<div class="out img30-r fl">
+								<img src="{$goods['head_pic']}"/>
+									</div>
+								<span class="fl mal10 fc-ye fs15">{$goods['nickname']}</span>
+								<if condition="$goods['social_status'] eq 1">
+									<span class="index-icon20 augur-diamond1 mal10"></span>
+								</if>
+							</div>
+						</div>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<div class="bg-f mat10">
+			<a class="h50 pad10-15 ovhid btn-jx disb fc0 lh30 fs16" href="#">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10">文章</span>
+				<!--<span class="fr mal10 index-icon13 augur-right"></span>-->
+				<!--<span class="fr fc-gray">查看更多</span>-->
+			</a>
+			<div class="augur-cont1">
+				<volist name="news" id="news">
+					<div class="augur-item2 weui-flex lh20">
+						<div class="weui-flex__item">
+							<p>[{$news['type_name']}]{$news['title']}</p>
+							<div class="mat10 fs13 fc-gray">来自：{$news['nickname']}</div>
+							<div class="ovhid fc-gray h20 mat10">
+								<span class="fl index-icon15 augur-eye"></span>
+								<span class="fl mal5">{$news['browse_times']}</span>
+								<span class="fr">{$news['create_time']}</span>
+							</div>
+						</div>
+						<div class="img100 mal10  out">
+							<img src="{$news['news_pic']}"/>
+						</div>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<div class="bg-f mat10 pad0-15">
+			<a class="h50 pad10-0 borb1 ovhid btn-jx disb fc0 lh30 fs16" href="#">
+				<span class="fl h30 bar-red"></span>
+				<span class="fl mal10">大师的回答</span>
+				<!--<span class="fr mal10 index-icon13 augur-right"></span>-->
+				<!--<span class="fr fc-gray">查看更多</span>-->
+			</a>
+			<volist name="reward" id="reward">
+				<div class="pad10-0 lh20 borb1">
+					<div class="h20 clearb">
+						<span class="fl index-icon15 augur-coin"></span>
+						<span class="fl fc-red mal5">{$reward['price']}</span>
+						<span class="fs15 mal10 fl">{$reward['title']}</span>
+					</div>
+					<div class="h20 clearb mat5 fc-gray">
+						<span class="fl index-icon15 augur-label1"></span>
+						<span class="fl mal10">{$reward['reward_name']}&nbsp;&nbsp;{$reward['create_time']}</span>
+					</div>
+				</div>
+				<div class="h50 lh30 clearb pad10-0">
+					<if condition="$reward['is_anonymous'] eq 1">
+						<img src="{$reward['head_pic']}" class="img30-r fl"/>
+						<span class="fl fc-gray mal10">{$reward['nickname']}</span>
+						<else/>
+						<span class="fl fc-gray mar10">匿名</span>
+					</if>
+
+					<span class="fr fc-red mal10">{$reward['watch_man']}人围观</span>
+					<span class="fr index-icon15 augur-eye"></span>
+				</div>
+			</volist>
+
+		</div>
+		<div class="augur-bom foot h50 weui-flex textcen bg-f">
+			<div class="weui-flex__item fs12 weui-flex lh15">
+				<a href="http://www.dashiwang.net" class="weui-flex__item borr1 btn-jx">
+					<img src="__PUBLIC__/Wap/img/concern.png" />
+					<p>关注</p>
+				</a>
+				<a href="http://www.dashiwang.net" class="weui-flex__item borr1 btn-jx">
+					<img src="__PUBLIC__/Wap/img/shop.png" />
+					<p>店铺</p>
+				</a>
+				<a href="http://www.dashiwang.net" class="weui-flex__item btn-jx">
+					<img src="__PUBLIC__/Wap/img/ask.png" />
+					<p>提问</p>
+				</a>
+			</div>
+			<a href="http://www.dashiwang.net" class="wi045 lh50 fc-f btn-jx bg-red">立即下单</a>
+		</div>
+	</body>
+</html>

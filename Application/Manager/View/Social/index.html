@@ -1,0 +1,153 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('ReleaseOrder/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('Social/delete',array('model'=>'Social','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <!--<button class="btn btn-info lead-btn" target-form="ids">导出Excel</button>&nbsp;-->
+                    <form action="{:U('Social/index')}" method="post" class="form">
+                        <input type="text" name="social_name" value="{$_REQUEST['social_name']}" placeholder="协会名称" style="width: 140px;margin-top: -10px;">
+                        <input type="text" name="nickname" value="{$_REQUEST['nickname']}" placeholder="创建者" style="width: 140px;margin-top: -10px;">
+                        <input type="text" name="one_contact" value="{$_REQUEST['one_contact']}" placeholder="联系人一" style="width: 140px;margin-top: -10px;">
+                        <input type="text" name="two_contact" value="{$_REQUEST['two_contact']}" placeholder="联系人二" style="width: 140px;margin-top: -10px;">
+                        <!--<input type="text" name="end_time" value="{$_REQUEST['end_time']}" placeholder="结束时间" style="width: 140px;" class="datetime">-->
+                        <select name="status" style="width: 140px;">
+                            <option value="">状态</option>
+                            <option value="1" <if condition="$_REQUEST['status'] eq 1">selected</if> >已通过</option>
+                            <option value="2" <if condition="$_REQUEST['status'] eq 2">selected</if> >已拒绝</option>
+                            <option value="999" <if condition="$_REQUEST['status'] eq 999">selected</if> >验证中</option>
+                        </select>
+                        <button class="btn btn-inverse" style="margin-top: -10px;">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>协会名称</th>
+                            <th width="12%">创建者</th>
+                            <th>协会地点</th>
+                            <th width="8%">协会联系人一</th>
+                            <th width="8%">协会联系人二</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['social_name']}</td>
+                                <td>{$row['master_nickname']}</td>
+                                <td>{$row['address']}</td>
+                                <td>{$row['one_contact']}</td>
+                                <td>{$row['two_contact']}</td>
+                                <td>{$row['start_time']}</td>
+                                <td>
+                                    <if condition="$row['status'] eq 1">已通过</if>
+                                    <if condition="$row['status'] eq 2">已拒绝</if>
+                                    <if condition="$row['status'] eq 0">验证中</if>
+                                </td>
+                                <td>
+                                    <a href="{:U('Social/update',array('id'=>$row['id']))}" title="详情" class="tip-bottom">
+                                        <span class="label label-success">详情</span></a>&nbsp;
+                                    <a href="{:U('Social/delete',array('model'=>'Social','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                    <if condition="$row['status'] eq 0">
+                                        <a href="{:U('Social/verify',array('id'=>$row['id']))}" title="验证" class="tip-bottom">
+                                            <span class="label label-warning">验证</span></a>
+                                        <elseif condition="$row['status'] eq 1"/>
+                                        <a href="{:U('Social/verify',array('id'=>$row['id']))}" title="验证信息" class="tip-bottom">
+                                            <span class="label label-info">验证信息</span></a>
+                                        <a href="{:U('Social/apply',array('id'=>$row['id']))}" title="申请列表" class="tip-bottom">
+                                            <span class="label label-default">申请列表</span></a>
+                                        <elseif condition="$row['status'] eq 2"/>
+                                        <a title="已拒绝" class="tip-bottom" style="cursor:pointer;">
+                                            <span class="label label-inverse">已拒绝</span></a>
+                                    </if>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="lead-model">
+        <form class="form-horizontal" method="post" action="{:U('Order/derive')}">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>导出协会信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label class="control-label">开始时间</label>
+                    <div class="controls">
+                        <input type="text" name="s_time"  placeholder="开始时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="text" name="e_time"  placeholder="结束时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" id="a_hide">关闭</a>
+                <button  class="btn btn-primary submit">确认导出</button>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+        $(".lead-btn").click(function(){
+            $('#lead-model').modal('show')
+        });
+        $("#a_hide").click(function(){
+            $('#lead-model').modal('hide')
+        });
+
+        $('button.btn-inverse').click(function(){
+            var start = $('input[name = start_time]').val();
+            var end = $('input[name = end_time]').val();
+            var starttime = Date.parse(new Date(start));
+            var endtime = Date.parse(new Date(end));
+            if(endtime < starttime){
+                alert('请重新选择时间');
+                return false;
+            }
+        });
+    </script>
+</block>

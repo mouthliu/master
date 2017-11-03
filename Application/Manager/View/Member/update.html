@@ -1,0 +1,190 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">基本信息</a></li>
+                        <if condition="$row['id'] neq ''">
+                            <li><a data-toggle="" href="{:U('Member/rePass',array('id'=>$row['id']))}">修改密码</a></li>
+                        </if>
+
+                    </ul>
+                </div>
+                <div class="widget-content tab-content nopadding">
+                    <div id="tab1" class="tab-pane active">
+                    <form class="form-horizontal" method="post" action="{:U('Member/update')}">
+                        <input type="hidden" name="model" value="Member"><input type="hidden" name="id" value="{$row['id']}">
+                        <div class="control-group">
+                            <label class="control-label">账号</label>
+                            <div class="controls">
+                                <input type="text" name="account" value="{$row['account']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <if condition="$nickname eq ''">
+                            <div class="control-group">
+                                <label class="control-label">昵称</label>
+                                <div class="controls">
+                                    <input type="text" name="nickname" value="{$row['nickname']}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <else/>
+                            <div class="control-group">
+                                <label class="control-label">昵称</label>
+                                <div class="controls">
+                                    <input type="text" name="nickname" value="{$nickname}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </if>
+
+                        <if condition="$row['password'] eq ''">
+                            <div class="control-group">
+                                <label class="control-label">密码</label>
+                                <div class="controls">
+                                    <input type="text" name="password" value="{$row['password']}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </if>
+
+                        <div class="control-group">
+                            <label class="control-label">头像</label>
+                            <div class="controls">
+                                {:hook('upload',array('is_first'=>1,'unique_sign'=>'head_pic','field_name'=>'head_pic','field_value'=>$row['head_pic'],'save_path'=>'Member'))}
+                                <span class="help-block">图片尽量控制在100K-300K，尺寸：100*100</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">性别</label>
+                            <div class="controls" class="controls">
+                                <select name="sex">
+                                    <option value="">请选择</option>
+                                    <option value="1" <if condition="$row['sex'] eq 1">selected</if> >男</option>
+                                    <option value="2" <if condition="$row['sex'] eq 2">selected</if> >女</option>
+                                    <option value="3" <if condition="$row['sex'] eq 3">selected</if> >保密</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">所在地区</label>
+                            <div class="controls" class="controls">
+                                <select name="province" id="province">
+                                    <option value="">所在省</option>
+                                    <volist name="region" id="region">
+                                        <option value="{$region['province_id']}" <if condition="$row['province'] eq $region['province_id']">selected</if> >{$region['region_name']}</option>
+                                    </volist>
+                                </select>
+                                <select name="city" id="city">
+                                    <option value="">所在市</option>
+                                    <volist name="city" id="city">
+                                        <option value="{$city['city_id']}" <if condition="$row['city'] eq $city['city_id']">selected</if> >{$city['region_name']}</option>
+                                    </volist>
+                                </select>
+                                <select name="area" id="area">
+                                    <option value="">所在区</option>
+                                    <volist name="area" id="area">
+                                        <option value="{$area['area_id']}" <if condition="$row['area'] eq $area['area_id']">selected</if> >{$area['region_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <if condition="$row['easemob_account'] neq ''">
+                            <div class="control-group">
+                                <label class="control-label">环信账号</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['easemob_account']}" disabled>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </if>
+
+                        <div class="control-group">
+                            <label class="control-label">出生年月</label>
+                            <div class="controls">
+                                <input type="text" name="birthday" value="{$row['birthday']}" class="datetime">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">余额</label>
+                            <div class="controls">
+                                <if condition="$row['balance'] neq ''">
+                                    <input type="text" name="balance" value="{$row['balance']}" disabled>
+                                    <else/>
+                                    <input type="text" name="balance" value="0.00" disabled>
+                                </if>
+
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <if condition="$row['integral'] neq ''">
+                            <div class="control-group">
+                                <label class="control-label">积分</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['integral']}" disabled>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </if>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            <button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">保 存</button>
+                        </div>
+                    </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('#province').blur(function(){
+                $('#city option[value!=""]').remove();
+                $.ajax({
+                    type: 'POST',
+                    url:  "{:U('Member/libraryCity')}",
+                    data:{
+                        parent_id: $('#province').val(),
+                        type : 1
+                    },
+                    success:function(response, status, xhr){
+                        for(var i=0; i<response.length; i++){
+                            var str = "<option value="+ response[i].city_id + ">"+response[i].region_name +" </option>";
+                            $('#city').append(str);
+                        }
+                    }
+                })
+            });
+            $('#city').blur(function(){
+                $('#area option[value!=""]').remove();
+                $.ajax({
+                    type: 'POST',
+                    url:  "{:U('Member/libraryCity')}",
+                    data:{
+                        parent_id: $('#city').val(),
+                        type : 2
+                    },
+                    success:function(response){
+                        for(var i=0; i<response.length; i++){
+                            var str = "<option value="+ response[i].area_id + ">"+response[i].region_name +" </option>";
+                            $('#area').append(str);
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+</block>

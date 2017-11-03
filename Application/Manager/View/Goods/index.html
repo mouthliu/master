@@ -1,0 +1,212 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('Goods/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <button class="btn btn-info ajax-post" url="{:U('Goods/resume',array('model'=>'Goods','status'=>1))}" target-form="ids">启用</button>&nbsp;
+                    <button class="btn btn-inverse ajax-post" url="{:U('Goods/forbid',array('model'=>'Goods','status'=>0))}" target-form="ids">禁用</button>&nbsp;
+                    <button class="btn btn-info lead-btn" target-form="ids">导出Excel</button>&nbsp;
+                    <form action="{:U('Goods/index')}" method="post" class="form">
+                        <input type="text" name="goods_name" value="{$_REQUEST['goods_name']}" placeholder="商品名称" style="width: 140px; margin-top: -10px;height: 30px;">
+                        <!--<input type="text" name="nickname" value="{$_REQUEST['nickname']}" placeholder="大师昵称" style="width: 140px; margin-top: -10px;">-->
+                        <input type="text" name="start_time" value="{$_REQUEST['start_time']}" placeholder="开始时间" style="width: 140px; margin-top: -10px;height: 30px;" class="datetime">
+                        <input type="text" name="end_time" value="{$_REQUEST['end_time']}" placeholder="结束时间" style="width: 140px; margin-top: -10px;height: 30px;" class="datetime">
+
+                        <select name="frame" style="width: 140px;">
+                            <option value="">上下架状态</option>
+                            <option value="1" <if condition="$_REQUEST['frame'] eq 1">selected</if> > 已上架 </option>
+                            <option value="2" <if condition="$_REQUEST['frame'] eq 2">selected</if> > 已下架 </option>
+                        </select>
+                        <select name="is_show" style="width: 140px;">
+                            <option value="">首页是否显示</option>
+                            <option value="1" <if condition="$_REQUEST['is_show'] eq 1">selected</if> >首页显示</option>
+                            <option value="2" <if condition="$_REQUEST['is_show'] eq 2">selected</if> >首页不显示</option>
+                        </select>
+                        <select name="first_type" style="width: 140px;" id="first_type">
+                            <option value="">商品一级类别</option>
+                            <volist name="first" id="first">
+                                <option value="{$first['parent_id']}" <if condition="$_REQUEST['first_type'] eq $first['parent_id']">selected</if> >{$first['type_name']}</option>
+                            </volist>
+                        </select>
+                        <select name="goods_type" style="width: 140px;" id="goods_type">
+                            <option value="">商品子级类别</option>
+                            <volist name="goods_type" id="goods_type">
+                                <option value="{$goods_type['goods_type_id']}" <if condition="$_REQUEST['goods_type'] eq $goods_type['goods_type_id']">selected</if> >{$goods_type['type_name']}</option>
+                            </volist>
+                        </select>
+                        <button class="btn btn-inverse" style=" margin-top: -10px;">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/></th>
+                            <th>ID</th>
+                            <th>大师昵称</th>
+                            <th>商品名称</th>
+                            <th>上下架状态</th>
+                            <th>商品一级类别</th>
+                            <th>商品子级类别</th>
+                            <th>首页是否显示</th>
+                            <th>排列序号</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['nickname']|default='待设置'}</td>
+                                <td>{$row['goods_name']}</td>
+                                <td>
+                                    <if condition="$row['frame'] eq 1">已上架</if>
+                                    <if condition="$row['frame'] eq 2">已下架</if>
+                                </td>
+                                <td>{$row['first_name']}</td>
+                                <td>{$row['type_name']}</td>
+                                <td>
+                                    <if condition="$row['is_show'] eq 1">显示</if>
+                                    <if condition="$row['is_show'] eq '0'">不显示</if>
+                                </td>
+                                <td>{$row['sort']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <if condition="$row['status'] eq 1">已启用</if>
+                                    <if condition="$row['status'] eq '0'">已禁用</if>
+                                </td>
+                                <td>
+                                    <a href="{:U('Goods/update',array('id'=>$row['id']))}" title="编辑" class="tip-bottom">
+                                        <span class="label label-success">编辑</span></a>&nbsp;
+                                    <if condition="$row['status'] eq 0">
+                                        <a href="{:U('Goods/delete',array('model'=>'Goods','ids'=>$row['id'],'status'=>1))}" title="启用" class="tip-bottom confirm ajax-get">
+                                            <span class="label label-info">启用</span></a>&nbsp;
+                                        <else/>
+                                        <a href="{:U('Goods/delete',array('model'=>'Goods','ids'=>$row['id'],'status'=>0))}" title="禁用" class="tip-bottom confirm ajax-get">
+                                            <span class="label label-inverse">禁用</span></a>&nbsp;
+                                    </if>
+                                    <a href="{:U('Goods/common',array('id'=>$row['id']))}" title="评价" class="tip-bottom"><span class="label label-warning">评价</span></a>
+                                    <a href="{:U('Goods/delete',array('model'=>'Goods','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="lead-model">
+        <form class="form-horizontal" method="post" action="{:U('Goods/derive')}">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>导出商品信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label class="control-label">开始时间</label>
+                    <div class="controls">
+                        <input type="text" name="s_time"  placeholder="开始时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="text" name="e_time"  placeholder="结束时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" id="a_hide">关闭</a>
+                <button  class="btn btn-primary submit">确认导出</button>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $(".lead-btn").click(function(){
+                $('#lead-model').modal('show')
+            });
+
+            $("#a_hide").click(function(){
+                $('#lead-model').modal('hide')
+            });
+
+            $('button.btn-inverse').click(function(){
+                var start = $('input[name = start_time]').val();
+                var end = $('input[name = end_time]').val();
+                var starttime = Date.parse(new Date(start));
+                var endtime = Date.parse(new Date(end));
+                if(endtime < starttime){
+                    alert('请重新选择时间');
+                    return false;
+                }
+            });
+        });
+
+        $(function(){
+            $('#first_type').blur(function(){
+                $('#goods_type option[value!=""]').remove();
+                $.ajax({
+                    type: 'POST',
+                    url:  "{:U('Goods/libraryCity')}",
+                    data:{
+                        parent_id: $('#first_type').val()
+                    },
+                    success:function(response, status, xhr){
+                        for(var i=0; i<response.length; i++){
+                            var str = "<option value="+ response[i].goods_type_id + ">"+response[i].type_name +" </option>";
+                            $('#goods_type').append(str);
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+</block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

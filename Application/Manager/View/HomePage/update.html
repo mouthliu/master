@@ -1,0 +1,47 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">首页类别</a></li>
+                    </ul>
+                </div>
+                <div class="widget-ad_desc tab-ad_desc nopadding">
+                    <div id="tab1" class="tab-pane active">
+                        <form class="form-horizontal" method="post" action="{:U('HomePage/update')}">
+                            <input type="hidden" name="model" value="MerchantType">
+                            <input type="hidden" name="id" value="{$row['id']}">
+                            <input type="hidden" name="type" value="1">
+                            <div class="control-group">
+                                <label class="control-label">首页类别</label>
+                                <div class="controls">
+                                    <input type="text" name="type_name" value="{$row['type_name']}" >
+                                    <span class="help-block">请输入类别名称</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">类别图片</label>
+                                <div class="controls">
+                                    {:hook('upload',array('is_first'=>1,'unique_sign'=>'logo','field_name'=>'logo','field_value'=>$row['logo'],'save_path'=>'Advert'))}
+                                    <span class="help-block">图片尽量控制在100K-300K</span>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                                <button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">保 存</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

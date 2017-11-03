@@ -1,0 +1,134 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">大师认证信息</a></li>
+                    </ul>
+                </div>
+                <div class="widget-ad_desc tab-ad_desc nopadding">
+                    <div id="tab1" class="tab-pane active">
+                        <form class="form-horizontal" method="post" action="{:U('Master/memberStatus')}">
+
+                            <input type="hidden" name="model" value="Master">
+                            <input type="hidden" name="id" value="{$row['id']}">
+                            <div class="control-group">
+                                <label class="control-label">大师昵称</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['nickname']}" readonly>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">真实姓名</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['name']}" readonly>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">身份证号</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['idcard']}" readonly>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">联系电话</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['phone']}" readonly>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">身份证正面照</label>
+                                <div class="controls">
+                                    <img src="" alt="">
+                                    <volist name="row['front_idcard']" id="frontalVolist">
+                                        <img src="{$frontalVolist['path']}" alt="" data-id="$frontalVolist['id']" width="100px;">
+                                    </volist>
+                                    <span class="help-block">图片双击放大</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">身份证背面照</label>
+                                <div class="controls">
+                                    <img src="" alt="">
+                                    <volist name="row['back_idcard']" id="frontalVolist">
+                                        <img src="{$frontalVolist['path']}" alt="" data-id="$frontalVolist['id']" width="100px;">
+                                    </volist>
+                                    <span class="help-block">图片双击放大</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">手持身份证照</label>
+                                <div class="controls">
+                                    <volist name="row['hand_idcard']" id="handheldVolist">
+                                        <img src="{$handheldVolist['path']}" alt="" data-id="$handheldVolist['id']" width="100px;">
+                                    </volist>
+                                    <span class="help-block">图片双击放大</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">实体店铺照片</label>
+                                <div class="controls">
+                                    <volist name="row['shop_pic']" id="handheldVolist">
+                                        <img src="{$handheldVolist['path']}" alt="" data-id="$handheldVolist['id']" width="100px;">
+                                    </volist>
+                                    <span class="help-block">图片双击放大</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">提交时间</label>
+                                <div class="controls">
+                                    <input type="text" name="" value="{$row['create_time']|date='Y-m-d H:i:s',###}" disabled>
+                                    <span class="help-block">该用户提交申请商家的时间</span>
+                                </div>
+                            </div>
+                            <eq name="row['auth_status']" value="2">
+                                <div class="control-group">
+                                    <label class="control-label">大师审核</label>
+                                    <div class="controls">
+                                        <select name="auth_status" id="">
+                                            <option value="3">允许</option>
+                                            <option value="1">拒绝</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </eq>
+                            <div class="form-actions">
+                                <eq name="row['auth_status']" value="2">
+                                    <button class="btn btn-info ajax-post" target-form="form-horizontal" type="submit">确认审核</button>
+                                </eq>
+                                <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>　
+                            </div>
+                        </form>
+                    </div>
+                    <div id="tab2" class="tab-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/layer/layer.js"></script>
+    <script>
+        $(document).on('dblclick','img',function(){
+            if($(this).attr('class') != 'big-pic'){
+                var str = $(this).attr('src');
+                layer.open({
+                    type: 1,
+                    title: false,
+                    maxWidth:'566px',
+                    maxHeight:'343px',
+                    area: 'auto',
+                    closeBtn: 0,
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    content: "<img class='big-pic' src='"+str+"'/>"
+                });
+            }
+        });
+    </script>
+</block>

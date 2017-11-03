@@ -1,0 +1,91 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon">
+                        <i class="icon-file"></i>
+                    </span>
+                    <h5>查看提现详情</h5>
+                </div>
+                <div class="widget-content">
+
+                    <div class="invoice-content">
+                        <div class="invoice-head">
+                            <div class="invoice-meta">
+                                用户类型<span class="invoice-number"></span>
+                            </div>
+                            <h5><if condition="$row['user_type'] eq 1">用户提现<else/>大师提现</if></h5>
+
+                            <div class="invoice-meta">
+                                提现类型<span class="invoice-number"></span>
+                            </div>
+                            <h5>
+                                <if condition="$row['type'] neq 2">银行卡</if>
+                                <if condition="$row['type'] eq 2">支付宝</if>
+                            </h5>
+
+                            <div class="invoice-meta">
+                                <if condition="$row['user_type'] eq 1">用户<else/>大师</if>昵称<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['nickname']}</h5>
+                            <if condition="$row['type'] neq 2">
+                                <div class="invoice-meta">
+                                    银行卡号<span class="invoice-number"></span>
+                                </div>
+                                <h5>{$row['bank_number']}</h5>
+
+                                <div class="invoice-meta">
+                                    银行名称<span class="invoice-number"></span>
+                                </div>
+                                <h5>{$row['bank_name']}</h5>
+
+                                <div class="invoice-meta">
+                                    银行卡用户<span class="invoice-number"></span>
+                                </div>
+                                <h5>{$row['name']}</h5>
+                                <else/>
+                                <div class="invoice-meta">
+                                    支付宝账号<span class="invoice-number"></span>
+                                </div>
+                                <h5>{$row['alipay_account']}</h5>
+                                <div class="invoice-meta">
+                                    支付宝姓名<span class="invoice-number"></span>
+                                </div>
+                                <h5>{$row['alipay_name']}</h5>
+
+                            </if>
+
+
+                            <div class="invoice-meta">
+                                持卡人手机号<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['telephone']}</h5>
+                            <div class="invoice-meta">
+                                提现金额<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['price']}</h5>
+                            <div class="invoice-meta">
+                                提现时间<span class="invoice-number"></span>
+                            </div>
+                            <h5>{$row['create_time']|date='Y-m-d H:i:s',###}</h5>
+                            <div class="invoice-meta">
+                                提现状态<span class="invoice-number"></span>
+                            </div>
+                            <h5>
+                                <eq name="row['status']" value="0">未处理</eq>
+                                <eq name="row['status']" value="1">已处理</eq>
+                            </h5>
+                            <br>
+                            <button class="btn" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

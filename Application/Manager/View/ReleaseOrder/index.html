@@ -1,0 +1,167 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('ReleaseOrder/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('ReleaseOrder/delete',array('model'=>'ReleaseOrder','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <button class="btn btn-info lead-btn" target-form="ids">导出Excel</button>&nbsp;
+                    <form action="{:U('ReleaseOrder/index')}" method="post" class="form">
+                        <input type="text" name="title" value="{$_REQUEST['title']}" placeholder="订单标题" style="width: 140px;">
+                        <input type="text" name="nickname" value="{$_REQUEST['nickname']}" placeholder="用户昵称" style="width: 140px;">
+                        <input type="text" name="start_time" value="{$_REQUEST['start_time']}" placeholder="开始时间" style="width: 140px;" class="datetime">
+                        <input type="text" name="end_time" value="{$_REQUEST['end_time']}" placeholder="结束时间" style="width: 140px;" class="datetime">
+                        <select name="type" style="margin-top: 10px; width: 140px;">
+                            <option value="">订单类型</option>
+                            <option value="1" <if condition="$_REQUEST['type'] eq 1">selected</if> >帮带订单</option>
+                            <option value="2" <if condition="$_REQUEST['type'] eq 2">selected</if> >求带订单</option>
+                        </select>
+                        <select name="reward_type" style="margin-top: 10px; width: 140px;">
+                            <option value="">悬赏订单类型</option>
+                            <option value="1" <if condition="$_REQUEST['reward_type'] eq 1">selected</if> >悬赏订单</option>
+                            <option value="2" <if condition="$_REQUEST['reward_type'] eq 2">selected</if> >非悬赏订单</option>
+                        </select>
+                        <select name="g_country" style="margin-top: 10px; width: 140px;">
+                            <option value="">出发国家</option>
+                            <volist name="country" id="g_country">
+                                <option value="{$g_country['country_id']}" <if condition="$_REQUEST['g_country'] eq $g_country['country_id']">selected</if> >{$g_country['country_cn']}</option>
+                            </volist>
+                        </select>
+                        <select name="d_country" style="margin-top: 10px; width: 140px;">
+                            <option value="">目的国家</option>
+                            <volist name="country" id="d_country">
+                                <option value="{$d_country['country_id']}" <if condition="$_REQUEST['d_country'] eq $d_country['country_id']">selected</if> >{$d_country['country_cn']}</option>
+                            </volist>
+                        </select>
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>订单标题</th>
+                            <th>用户昵称</th>
+                            <th>订单类型</th>
+                            <th>悬赏订单</th>
+                            <th>出发国家</th>
+                            <th>目的国家</th>
+                            <th>出发时间</th>
+                            <th>截止时间</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['title']}</td>
+                                <td>{$row['nickname']}</td>
+                                <td>
+                                    <if condition="$row['type'] eq 1">帮带订单</if>
+                                    <if condition="$row['type'] eq 2">求带订单</if>
+                                </td>
+                                <td>
+                                    <if condition="$row['reward_type'] eq 1">悬赏订单</if>
+                                    <if condition="$row['reward_type'] eq 2">非悬赏订单</if>
+                                </td>
+                                <td>{$row['g_country_cn']}</td>
+                                <td>{$row['d_country_cn']}</td>
+                                <td>{$row['start_time']|date='Y-m-d',###}</td>
+                                <td>
+                                    <if condition="$row['end_time'] eq 0">未设置</if>
+                                    <if condition="$row['end_time'] neq 0">{$row['end_time']|date='Y-m-d',###}</if>
+                                </td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <a href="{:U('ReleaseOrder/update',array('id'=>$row['id']))}" title="详情" class="tip-bottom">
+                                        <span class="label label-success">详情</span></a>&nbsp;
+                                    <a href="{:U('AddOrder/index',array('r_order_id'=>$row['id'],'r_order_type'=>$row['type']))}" title="订单列表" class="tip-bottom">
+                                        <span class="label label-info">订单列表</span></a>&nbsp;
+                                    <a href="{:U('ReleaseOrder/delete',array('model'=>'ReleaseOrder','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="lead-model">
+        <form class="form-horizontal" method="post" action="{:U('ReleaseOrder/derive')}">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>导出用户信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label class="control-label">开始时间</label>
+                    <div class="controls">
+                        <input type="text" name="s_time"  placeholder="开始时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="text" name="e_time"  placeholder="结束时间" class="datetime" autocomplete="off" style="width: 200px;">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" id="a_hide">关闭</a>
+                <button  class="btn btn-primary submit">确认导出</button>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+        $(".lead-btn").click(function(){
+            $('#lead-model').modal('show')
+        });
+        $("#a_hide").click(function(){
+            $('#lead-model').modal('hide')
+        });
+
+        $('button.btn-inverse').click(function(){
+            var start = $('input[name = start_time]').val();
+            var end = $('input[name = end_time]').val();
+            var starttime = Date.parse(new Date(start));
+            var endtime = Date.parse(new Date(end));
+            if(endtime < starttime){
+                alert('请重新选择时间');
+                return false;
+            }
+        });
+    </script>
+</block>

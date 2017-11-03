@@ -1,0 +1,78 @@
+<extend name="Public/base" />
+
+<block name="main">
+    <!--日历 start-->
+    <link rel="stylesheet" href="__STATIC__/datetimepicker/css/datetimepicker.css" />
+    <script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!--日历 end-->
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+
+                <div class="widget-title widget-title-search">
+                    <!--<button class="btn btn-success href" url="{:U('Label/add')}" target-form="ids">新增</button>&nbsp;-->
+                    <button class="btn btn-danger confirm ajax-post" url="{:U('OrderComment/delete',array('model'=>'OrderComment','status'=>9))}" target-form="ids">删除</button>&nbsp;
+                    <form action="{:U('OrderComment/index')}" method="post" class="form">
+                        <input type="text" name="c_order_sn" value="{$_REQUEST['c_order_sn']}" placeholder="订单编号">
+                        <input type="text" name="c_nickname" value="{$_REQUEST['c_nickname']}" placeholder="评论人昵称">
+                        <button class="btn btn-inverse">查询</button>
+                    </form>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" class="check-all"/><!--<i class="icon-resize-vertical"></i>--></th>
+                            <th>ID</th>
+                            <th>订单编号</th>
+                            <th>评论人昵称</th>
+                            <th>评论星级</th>
+                            <th>评论内容</th>
+                            <th>评论时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <volist name="list" id="row">
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{$row['id']}" class="ids"/></td>
+                                <td>{$row['id']}</td>
+                                <td>{$row['c_order_sn']}</td>
+                                <td>{$row['c_nickname']}</td>
+                                <td>{$row['evaluate_star']}</td>
+                                <td>{$row['content']}</td>
+                                <td>{$row['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <!--<a href="{:U('Label/update',array('id'=>$row['id']))}" title="编辑" class="tip-bottom">-->
+                                        <!--<span class="label label-success">编辑</span></a>&nbsp;-->
+                                    <a href="{:U('OrderComment/delete',array('model'=>'OrderComment','ids'=>$row['id'],'status'=>9))}" title="删除" class="tip-bottom confirm ajax-get">
+                                        <span class="label label-important">删除</span></a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination alternate">
+                    {$page}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('button.move').click(function(){
+                if($(this).next('span').css('display') == 'none') {
+                    $(this).next('span').show();
+                } else {
+                    $(this).next('span').hide();
+                }
+            })
+        })
+    </script>
+</block>

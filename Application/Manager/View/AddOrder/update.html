@@ -1,0 +1,138 @@
+<extend name="Public/base" />
+
+<block name="main">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="4" style="text-align: center">订单详情</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <tr>
+                            <td>订单标题：{$row['title']}</td>
+                            <td>订单类型：{$row['type_name']}</td>
+                            <td>悬赏类型：{$row['reward_name']}</td>
+                            <td>开始时间：{$row['start_time']|date='Y-m-d',###}</td>
+                        </tr>
+                        <tr>
+                            <td>出发国家：{$row['g_country_cn']}</td>
+                            <td>出发城市：{$row['g_city']}</td>
+                            <td>目的国家：{$row['d_country_cn']}</td>
+                            <td>目的城市：{$row['d_city']}</td>
+                        </tr>
+                        <tr>
+                            <td>带人数量：{$row['people_num']}位</td>
+                            <td>带人单价：{$row['people_money']}元</td>
+                            <td>带物公斤数：{$row['goods_weight']}公斤</td>
+                            <td>带物单价：{$row['goods_money']}元</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="widget-box ">
+                <div class="widget-content nopadding ">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="4" style="text-align: center">配送信息</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        <tr>
+                            <td style="width: 33%;">收货人：{$row['name']}</td>
+                            <td style="width: 33%;">联系电话：{$row['telephone']}</td>
+                            <td style="width: 33%;">地址：{$row['address_info']}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div class="widget-box">
+
+            <div class="widget-content nopadding">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th colspan="4" style="text-align: center">订单信息</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tbody">
+                    <tr>
+                        <td style="width: 33%;">订单ID：{$row['id']}</td>
+                        <td style="width: 33%;">订单编号：{$row['order_sn']}</td>
+                        <td style="width: 33%;">下单时间：{$row['create_time']|date='Y-m-d',###}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 33%;">支付方式：
+                            <eq name="row['pay_type']" value="0">未支付</eq>
+                            <eq name="row['pay_type']" value="2">支付宝支付</eq>
+                            <eq name="row['pay_type']" value="3">微信支付</eq>
+                            <eq name="row['pay_type']" value="4">余额支付</eq>
+                        </td>
+                        <td style="width: 33%;">支付状态：
+                            <eq name="row['pay_status']" value="0">未支付</eq>
+                            <eq name="row['pay_status']" value="1">已支付</eq>
+                        </td>
+                        <td style="width: 33%;">订单状态：
+                            <eq name="row['status']" value="0">待支付</eq>
+                            <eq name="row['status']" value="1">待接单</eq>
+                            <eq name="row['status']" value="2">待取货</eq>
+                            <eq name="row['status']" value="3">待收货</eq>
+                            <eq name="row['status']" value="4">待收货</eq>
+                            <eq name="row['status']" value="5">待评价</eq>
+                            <eq name="row['status']" value="6">订单完成</eq>
+                            <eq name="row['status']" value="7">订单已拒绝</eq>
+                            <eq name="row['status']" value="8">订单已取消</eq>
+                            <eq name="row['status']" value="9">订单已删除</eq>
+                            <eq name="row['status']" value="10">订单预定中</eq>
+                            <eq name="row['status']" value="11">待评价</eq>
+                            <eq name="row['status']" value="12">预定失败</eq>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 33%;">订单总价格：{$row['total_price']}</td>
+                        <td style="width: 33%;">优惠金额：{$row['coupon_price']}</td>
+                        <td style="width: 33%;">支付金额：{$row['pay_price']}</td>
+                    </tr>
+                    <!--<?php var_dump($row['pick_record']);?>-->
+                    <!--<tr>-->
+                        <!--<td style="width: 33%;">确认取货录音：　-->
+                            <!--<if condition="$row['pick_record'] neq array()">-->
+                                <!--<button class="btn btn-info href" url="{:U('AddOrder/download',array('a_order_id'=>$row['id']))}" target-form="ids">录音下载</button>-->
+                                <!--<else/>-->
+                                <!--未上传-->
+                            <!--</if>-->
+                        <!--</td>-->
+                        <!--<td style="width: 33%;">确认收货录音：　-->
+                            <!--<if condition="$row['receive_record'] neq array()">-->
+                                <!--<button class="btn btn-info href" url="{:U('AddOrder/download_add',array('a_order_id'=>$row['id']))}" target-form="ids">录音下载</button>-->
+                            <!--<else/>-->
+                                <!--未上传-->
+                            <!--</if>-->
+                        <!--</td>-->
+                        <!--<td style="width: 33%;"></td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br><br>
+        <p  style="text-align: center"><button class="btn href" url="{:U('AddOrder/index')}" target-form="ids">返回上级</button></p>
+    </div>
+    </div>
+    <br>
+</block>
+
